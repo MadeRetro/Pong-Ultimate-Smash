@@ -3,8 +3,8 @@
 
 using namespace std;
 
-int screenHeight;
-int screenWidth;
+float screenHeight;
+float screenWidth;
 
 int ballRadius = 10;
 Vector2 ballPosition;
@@ -12,6 +12,7 @@ Vector2 ballSpeed;
 
 Vector2 leftPaddlePosition;
 Vector2 rightPaddlePosition;
+Vector2 titleposition{ 290,20 };
 
 const int paddleWidth = 10;
 const int paddleHeight = 80;
@@ -21,16 +22,25 @@ int leftPlayerScore = 0;
 int rightPlayerScore = 0;
 
 
+
+
 void ResetBall() {
     ballPosition = { static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2) };
-    ballSpeed = { 2, 3 };
+
+    // Generate a random angle between 45 and 135 degrees
+    float angle = GetRandomValue(45, 50);
+
+    // Calculate the corresponding x and y components of the speed
+    ballSpeed.x = cos(angle * DEG2RAD) * 5; // 5 is the speed, adjust as needed
+    ballSpeed.y = sin(angle * DEG2RAD) * 5;
 }
 
 
 int main() {
     cout << "Hello Worrrld" << endl;
 
-    //Font ft = LoadFont("resources/fonts/setback.png");
+    Font ft = LoadFont("resources/fonts/jupiter_crash");
+
 
     screenHeight = 600;
     screenWidth = 900;
@@ -121,8 +131,8 @@ int main() {
 
         // Draw text
 
-        //DrawTextEx(ft, "Pong Ultimate", ballPosition, 30,20,WHITE);
-        DrawText("Pong        Ultimate", 325,10, 30,WHITE);
+        DrawTextEx(ft, "Pong Ultimate", titleposition , 30, 20, WHITE);
+        //DrawText("Pong        Ultimate", 325,10, 30,WHITE);
         
 
         // Drawing three lines to make them thicker
@@ -144,8 +154,8 @@ int main() {
 
 
         // Draw scores
-        DrawText(TextFormat("%d", leftPlayerScore), screenWidth / 4, 10, 30, WHITE);
-        DrawText(TextFormat("%d", rightPlayerScore), screenWidth * 3 / 4 - MeasureText(TextFormat("%d", rightPlayerScore), 30), 10, 30, WHITE);
+        DrawTextEx(ft, TextFormat("%d", leftPlayerScore), { screenWidth / 4, 10 }, 30,2, WHITE);
+        DrawTextEx(ft, TextFormat("%d", rightPlayerScore), { screenWidth * 3 / 4 - MeasureText(TextFormat("%d", rightPlayerScore), 30), 10 }, 30,2, WHITE);
 
 
         EndDrawing();
