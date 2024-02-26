@@ -25,7 +25,7 @@ Vector2 titlePosition{ 275,20 };
 
 const int paddleWidth = 10;
 const int paddleHeight = 80;
-const int paddleSpeed = 5;
+const int paddleSpeed = 5.7;
 
 int leftPlayerScore = 0;
 int rightPlayerScore = 0;
@@ -39,7 +39,7 @@ void ResetBall() {
     ballPosition = { static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2) };
 
     // Generate a random angle between 45 and 135 degrees
-    float angle = GetRandomValue(45, 50);
+    float angle = GetRandomValue(40, 50);
 
     // Calculate the corresponding x and y components of the speed
     ballSpeed.x = cos(angle * DEG2RAD) * 10; // 5 is the speed, adjust as needed
@@ -81,6 +81,9 @@ int main() {
             DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 15, WHITE);
             DrawText("Press any key to start", (screenWidth / 4)+100, screenHeight / 2, 20, WHITE);
             EndDrawing();
+
+            leftPlayerScore = 0;
+            rightPlayerScore = 0;
 
             // Check for key press to start the game
             if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_D)) {
@@ -299,11 +302,15 @@ int main() {
                 leftPaddlePosition.y += paddleSpeed;
             }
 
-            if (IsKeyDown(KEY_UP) && rightPaddlePosition.y > 0) {
-                rightPaddlePosition.y -= paddleSpeed;
-            }
-            if (IsKeyDown(KEY_DOWN) && (rightPaddlePosition.y + paddleHeight) < screenHeight) {
+
+            // AI controls
+            // Simple AI: Match the height of the ball
+
+            if (rightPaddlePosition.y + paddleHeight / 2 < ballPosition.y) {
                 rightPaddlePosition.y += paddleSpeed;
+            }
+            else if (rightPaddlePosition.y + paddleHeight / 2 > ballPosition.y) {
+                rightPaddlePosition.y -= paddleSpeed;
             }
 
 
@@ -319,7 +326,7 @@ int main() {
 
             // Draw paddles
             DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
-            DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
+            DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, RED);
 
 
             // Draw text
