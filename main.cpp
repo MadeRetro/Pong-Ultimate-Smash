@@ -33,11 +33,7 @@ const int paddleSpeed = 5.7;
 int leftPlayerScore = 0;
 int rightPlayerScore = 0;
 
-
-
 Scene currentScene = MENU;
-
-
 
 class Button {
 public:
@@ -61,16 +57,10 @@ public:
     }
 };
 
-
-
-
-
-
 std::vector<Button> buttons; // Add this vector to store buttons
 
 void launchScene(Scene newScene) {
-    currentScene = newScene;
-    
+    currentScene = newScene; 
 }
 
 // Add this function to check for button clicks and launch corresponding scenes
@@ -83,20 +73,10 @@ void checkButtonClicks() {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 void ResetBall() {
     ballPosition = { static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2) };
 
-    // Generate a random angle between 45 and 135 degrees
+    // Generate a random angle between 45 and 50 degrees
     float angle = GetRandomValue(40, 50);
 
     // Calculate the corresponding x and y components of the speed
@@ -104,12 +84,10 @@ void ResetBall() {
     ballSpeed.y = sin(angle * DEG2RAD) * 10;
 }
 
-
 int main() {
     cout << "Hello Worrrld" << endl;
 
     Font ft = LoadFont("resources/fonts/jupiter_crash");
-
 
     screenHeight = 600;
     screenWidth = 800;
@@ -127,9 +105,6 @@ int main() {
     leftPaddlePosition = { 10, static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
     rightPaddlePosition = { static_cast<float>(screenWidth - paddleWidth - 10), static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
 
-
-
-
     // Create buttons
     buttons.push_back(Button({ 350, 200 }, { 200, 50 }, "VS Mode", GAME));
     buttons.push_back(Button({ 350, 300 }, { 200, 50 }, "Solo Mode", AI));
@@ -141,47 +116,32 @@ int main() {
         TraceLog(LOG_ERROR, "Failed to load image: Courtennis.jpg");
     }
 
-    Texture2D texture = LoadTextureFromImage(img);      // Image converted to texture, uploaded to GPU memory (VRAM)
-    UnloadImage(img);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
-
+    Texture2D texture = LoadTextureFromImage(img);
+    UnloadImage(img);
 
     while (!WindowShouldClose()) {
 
-
         switch (currentScene) {
         case MENU:
-
-
-
-
 
             // Draw menu
             BeginDrawing();
             ClearBackground(DARKBLUE);
 
-
             DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
-
-
 
             DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 15, WHITE);
             //DrawText("Press any key to start", (screenWidth / 4)+100, screenHeight / 2, 20, WHITE);
-
-
 
             // Draw menu buttons
             for (const Button& button : buttons) {
                 button.draw();
             }
 
-
             leftPlayerScore = 0;
             rightPlayerScore = 0;
 
-
             EndDrawing();
-
-
 
             // Check for key press to start the game
             if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_D)) {
@@ -190,8 +150,6 @@ int main() {
                 rightPlayerScore = 0;
 
                 currentScene = GAME;
-
-
 
             }
 
@@ -206,11 +164,6 @@ int main() {
 
 
         case GAME:
-
-
-
-
-
 
             // Update
             ballPosition.x += ballSpeed.x;
@@ -239,7 +192,6 @@ int main() {
                 ResetBall();
             }
 
-
             // Control paddles
             if (IsKeyDown(KEY_W) && leftPaddlePosition.y > 0) {
                 leftPaddlePosition.y -= paddleSpeed;
@@ -257,7 +209,6 @@ int main() {
 
 
             // Draw
-
             BeginDrawing();
             ClearBackground(DARKBLUE);
 
@@ -266,22 +217,14 @@ int main() {
             // Draw ball
             DrawCircleV(ballPosition, ballRadius, WHITE);
 
-
-
             // Draw paddles
             DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
             DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
 
-
             // Draw text
-
             //DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 10, WHITE);
-
-
             //Previous text code idea
             //DrawText("Pong        Ultimate", 325,10, 30,WHITE);
-
-
             // Drawing three lines to make them thicker
 
             for (int i = 0; i < screenHeight; i += 15) {
@@ -304,15 +247,12 @@ int main() {
             DrawTextEx(ft, TextFormat("%d", leftPlayerScore), { screenWidth / 4, 10 }, 30, 2, WHITE);
             DrawTextEx(ft, TextFormat("%d", rightPlayerScore), { screenWidth * 3 / 4 - MeasureText(TextFormat("%d", rightPlayerScore), 30), 10 }, 30, 2, WHITE);
 
-
             EndDrawing();
 
             // Check for key press to start the game
             if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_P)) {
                 currentScene = MENU;
             }
-
-
 
             if (leftPlayerScore == 10 || rightPlayerScore == 10) {
                 currentScene = SCORE;
@@ -323,12 +263,10 @@ int main() {
 
         case SCORE:
             
-
             // Draw menu
             BeginDrawing();
             ClearBackground(DARKBLUE);
             DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 15, WHITE);
-
 
             if (leftPlayerScore == 10) {
 
@@ -341,7 +279,6 @@ int main() {
                 DrawText("Right", (screenWidth / 4) + 40, screenHeight / 2, 20, WHITE);
 
             }
-
 
             DrawText("player wins ! Congrats !", (screenWidth / 4) + 100, screenHeight / 2, 20, WHITE);
             EndDrawing();
@@ -361,13 +298,7 @@ int main() {
                 currentScene = MENU;
             }
 
-
-
-
             break;
-
-
-
 
         case AI:
 
@@ -392,12 +323,12 @@ int main() {
                 rightPlayerScore++;
                 ResetBall();
             }
+
             else if (ballPosition.x + ballRadius > screenWidth) {
                 // Left player scores a point
                 leftPlayerScore++;
                 ResetBall();
             }
-
 
             // Control paddles
             if (IsKeyDown(KEY_W) && leftPaddlePosition.y > 0) {
@@ -406,7 +337,6 @@ int main() {
             if (IsKeyDown(KEY_S) && (leftPaddlePosition.y + paddleHeight) < screenHeight) {
                 leftPaddlePosition.y += paddleSpeed;
             }
-
 
             // AI controls
             // Simple AI: Match the height of the ball
@@ -418,9 +348,7 @@ int main() {
                 rightPaddlePosition.y -= paddleSpeed;
             }
 
-
             // Draw
-
             BeginDrawing();
             ClearBackground(DARKBLUE);
 
@@ -429,22 +357,14 @@ int main() {
             // Draw ball
             DrawCircleV(ballPosition, ballRadius, WHITE);
 
-
-
             // Draw paddles
             DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
             DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, RED);
 
-
             // Draw text
-
             //DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 10, WHITE);
-
-
             //Previous text code idea
             //DrawText("Pong        Ultimate", 325,10, 30,WHITE);
-
-
             // Drawing three lines to make them thicker
 
             for (int i = 0; i < screenHeight; i += 15) {
@@ -462,11 +382,9 @@ int main() {
                     { static_cast<float>((screenWidth / 2) - 1), static_cast<float>(i + 10) }, WHITE);
             }
 
-
             // Draw scores
             DrawTextEx(ft, TextFormat("%d", leftPlayerScore), { screenWidth / 4, 10 }, 30, 2, WHITE);
             DrawTextEx(ft, TextFormat("%d", rightPlayerScore), { screenWidth * 3 / 4 - MeasureText(TextFormat("%d", rightPlayerScore), 30), 10 }, 30, 2, RED);
-
 
             EndDrawing();
 
@@ -475,14 +393,11 @@ int main() {
                 currentScene = MENU;
             }
 
-
-
             if (leftPlayerScore == 10 || rightPlayerScore == 10) {
                 currentScene = SCOREAI;
             }
 
             break;
-
 
         case SCOREAI :
 
@@ -490,7 +405,6 @@ int main() {
             BeginDrawing();
             ClearBackground(DARKBLUE);
             DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 15, WHITE);
-
 
             if (leftPlayerScore == 10) {
 
@@ -503,7 +417,6 @@ int main() {
                 DrawText("Right", (screenWidth / 4) + 40, screenHeight / 2, 20, RED);
 
             }
-
 
             DrawText("player wins ! Congrats !", (screenWidth / 4) + 100, screenHeight / 2, 20, WHITE);
             EndDrawing();
@@ -523,35 +436,15 @@ int main() {
                 currentScene = MENU;
             }
 
-
-
-
             break;
 
-
-
         }
-
-
-        
-
-
-
-
-
-
-
-
-
-
 
     }
 
     CloseWindow();
     return 0;
 }
-
-//
 
 
 
