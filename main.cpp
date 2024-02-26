@@ -1,7 +1,10 @@
 #include "raylib.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
+
+
 
 enum Scene {
     MENU,
@@ -30,7 +33,62 @@ const int paddleSpeed = 5.7;
 int leftPlayerScore = 0;
 int rightPlayerScore = 0;
 
+
+
 Scene currentScene = MENU;
+
+
+
+class Button {
+public:
+    Rectangle bounds;
+    std::string text;
+    Scene sceneID;
+
+    Button(Vector2 position, Vector2 size, std::string text, Scene sceneID) {
+        bounds = { position.x, position.y, size.x, size.y };
+        this->text = text;
+        this->sceneID = sceneID;
+    }
+
+    bool isClicked() const {
+        return CheckCollisionPointRec(GetMousePosition(), bounds) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON);
+    }
+
+    void draw() const {
+        DrawRectangleRec(bounds, WHITE);
+        DrawText(text.c_str(), static_cast<int>(bounds.x + bounds.width / 4), static_cast<int>(bounds.y + bounds.height / 4), 20, BLACK);
+    }
+};
+
+
+
+
+
+
+std::vector<Button> buttons; // Add this vector to store buttons
+
+void launchScene(Scene newScene) {
+    currentScene = newScene;
+    
+}
+
+// Add this function to check for button clicks and launch corresponding scenes
+void checkButtonClicks() {
+    for (const Button& button : buttons) {
+        if (button.isClicked()) {
+            launchScene(button.sceneID);
+            break; // Stop checking buttons after the first click
+        }
+    }
+}
+
+
+
+
+
+
+
 
 
 
@@ -54,7 +112,7 @@ int main() {
 
 
     screenHeight = 600;
-    screenWidth = 900;
+    screenWidth = 800;
 
     InitWindow(screenWidth, screenHeight, "Pong Ultimate");
     SetTargetFPS(60);
@@ -70,20 +128,60 @@ int main() {
     rightPaddlePosition = { static_cast<float>(screenWidth - paddleWidth - 10), static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
 
 
+
+
+    // Create buttons
+    buttons.push_back(Button({ 350, 200 }, { 200, 50 }, "VS Mode", GAME));
+    buttons.push_back(Button({ 350, 300 }, { 200, 50 }, "Solo Mode", AI));
+
+
+    Image img = LoadImage("Images/Courtdetennis.png");
+
+    if (img.data == NULL) {
+        TraceLog(LOG_ERROR, "Failed to load image: Courtennis.jpg");
+    }
+
+    Texture2D texture = LoadTextureFromImage(img);      // Image converted to texture, uploaded to GPU memory (VRAM)
+    UnloadImage(img);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
+
+
     while (!WindowShouldClose()) {
 
 
         switch (currentScene) {
         case MENU:
+
+
+
+
+
             // Draw menu
             BeginDrawing();
             ClearBackground(DARKBLUE);
+
+
+            DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
+
+
+
             DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 15, WHITE);
-            DrawText("Press any key to start", (screenWidth / 4)+100, screenHeight / 2, 20, WHITE);
-            EndDrawing();
+            //DrawText("Press any key to start", (screenWidth / 4)+100, screenHeight / 2, 20, WHITE);
+
+
+
+            // Draw menu buttons
+            for (const Button& button : buttons) {
+                button.draw();
+            }
+
 
             leftPlayerScore = 0;
             rightPlayerScore = 0;
+
+
+            EndDrawing();
+
+
 
             // Check for key press to start the game
             if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_D)) {
@@ -102,10 +200,15 @@ int main() {
                 currentScene = AI;
             }
 
+            checkButtonClicks();
+
             break;
 
 
         case GAME:
+
+
+
 
 
 
@@ -157,6 +260,8 @@ int main() {
 
             BeginDrawing();
             ClearBackground(DARKBLUE);
+
+            DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
 
             // Draw ball
             DrawCircleV(ballPosition, ballRadius, WHITE);
@@ -318,6 +423,8 @@ int main() {
 
             BeginDrawing();
             ClearBackground(DARKBLUE);
+
+            DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
 
             // Draw ball
             DrawCircleV(ballPosition, ballRadius, WHITE);
