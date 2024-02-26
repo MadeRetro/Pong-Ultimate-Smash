@@ -214,10 +214,9 @@ int main() {
 
 
         case SCORE:
-            // ... (Score screen logic will be added here)
+            
 
-
-                        // Draw menu
+            // Draw menu
             BeginDrawing();
             ClearBackground(DARKBLUE);
             DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 15, WHITE);
