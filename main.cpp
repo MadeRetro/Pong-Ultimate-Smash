@@ -12,6 +12,8 @@ enum Scene {
     SCORE,
     AI,
     SCOREAI,
+    SOLO_MODE,  // Add this line for solo mode
+    VERSUS_MODE,
 };
 
 float screenHeight;
@@ -24,7 +26,7 @@ Vector2 ballSpeed;
 Vector2 leftPaddlePosition;
 Vector2 rightPaddlePosition;
 
-Vector2 titlePosition{ 275,20 };
+Vector2 titlePosition{ 220,20 };
 
 const int paddleWidth = 10;
 const int paddleHeight = 80;
@@ -35,16 +37,25 @@ int rightPlayerScore = 0;
 
 Scene currentScene = MENU;
 
+
+
+
+
+
+
 class Button {
 public:
     Rectangle bounds;
     std::string text;
     Scene sceneID;
+    Texture2D image;  // New member for the button image
 
-    Button(Vector2 position, Vector2 size, std::string text, Scene sceneID) {
+    // Constructor modified to accept Texture2D directly
+    Button(Vector2 position, Vector2 size, std::string text, Scene sceneID, Texture2D image) {
         bounds = { position.x, position.y, size.x, size.y };
         this->text = text;
         this->sceneID = sceneID;
+        this->image = image;
     }
 
     bool isClicked() const {
@@ -52,10 +63,17 @@ public:
     }
 
     void draw() const {
-        DrawRectangleRec(bounds, WHITE);
-        DrawText(text.c_str(), static_cast<int>(bounds.x + bounds.width / 4), static_cast<int>(bounds.y + bounds.height / 4), 20, BLACK);
+        // Draw the image if available, otherwise draw a white rectangle
+        if (image.id > 0) {
+            DrawTextureRec(image, { 0, 0, static_cast<float>(image.width), static_cast<float>(image.height) }, titlePosition, WHITE);
+        }
+        else {
+            DrawRectangleRec(bounds, WHITE);
+            DrawText(text.c_str(), static_cast<int>(bounds.x + bounds.width / 4), static_cast<int>(bounds.y + bounds.height / 4), 20, BLACK);
+        }
     }
 };
+
 
 std::vector<Button> buttons; // Add this vector to store buttons
 
@@ -102,22 +120,38 @@ int main() {
 
     // Initialize paddle positions
     ResetBall();
+
     leftPaddlePosition = { 10, static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
     rightPaddlePosition = { static_cast<float>(screenWidth - paddleWidth - 10), static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
 
     // Create buttons
-    buttons.push_back(Button({ 350, 200 }, { 200, 50 }, "VS Mode", GAME));
-    buttons.push_back(Button({ 350, 300 }, { 200, 50 }, "Solo Mode", AI));
 
 
     Image img = LoadImage("Images/Courtdetennis.png");
 
-    if (img.data == NULL) {
-        TraceLog(LOG_ERROR, "Failed to load image: Courtennis.jpg");
-    }
+    Image Solo = LoadImage("Images/S.png");
+
+    Image Versus = LoadImage("Images/VS.png");
 
     Texture2D texture = LoadTextureFromImage(img);
     UnloadImage(img);
+
+    Texture2D textureSolo = LoadTextureFromImage(Solo);
+    UnloadImage(Solo);
+
+    Texture2D textureVersus = LoadTextureFromImage(Versus);
+    UnloadImage(Versus);
+
+
+    // Create buttons
+    buttons.push_back(Button({ 50, 100 }, { 200, 100 }, "Solo Mode", SOLO_MODE, textureSolo));
+    buttons.push_back(Button({ 100, 250 }, { 200, 100 }, "VS Mode", VERSUS_MODE, textureVersus));
+
+
+
+
+
+
 
     while (!WindowShouldClose()) {
 
@@ -130,7 +164,7 @@ int main() {
 
             DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
 
-            DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 15, WHITE);
+            DrawTextEx(ft, "Pong Ultimate", titlePosition, 40, 15, WHITE);
             //DrawText("Press any key to start", (screenWidth / 4)+100, screenHeight / 2, 20, WHITE);
 
             // Draw menu buttons
@@ -138,8 +172,16 @@ int main() {
                 button.draw();
             }
 
+
+
             leftPlayerScore = 0;
             rightPlayerScore = 0;
+
+
+
+
+
+
 
             EndDrawing();
 
