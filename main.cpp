@@ -144,8 +144,9 @@ int main() {
 
 
     // Create buttons
-    buttons.push_back(Button({ 50, 100 }, { 200, 100 }, "Solo Mode", SOLO_MODE, textureSolo));
-    buttons.push_back(Button({ 100, 250 }, { 200, 100 }, "VS Mode", VERSUS_MODE, textureVersus));
+    buttons.push_back(Button({ 100, 100 }, { 200, 100 }, "Solo Mode", SOLO_MODE, textureSolo));
+
+    //buttons.push_back(Button({ 100, 250 }, { 200, 100 }, "VS Mode", VERSUS_MODE, textureVersus));
 
 
 
@@ -172,15 +173,8 @@ int main() {
                 button.draw();
             }
 
-
-
             leftPlayerScore = 0;
             rightPlayerScore = 0;
-
-
-
-
-
 
 
             EndDrawing();
