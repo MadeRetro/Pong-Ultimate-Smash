@@ -28,7 +28,7 @@ Vector2 titlePosition{ 220,20 };
 
 const int paddleWidth = 10;
 const int paddleHeight = 80;
-const int paddleSpeed = 5.7;
+const int paddleSpeed = 6;
 
 int leftPlayerScore = 0;
 int rightPlayerScore = 0;
@@ -95,7 +95,7 @@ void ResetBall() {
     ballPosition = { static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2) };
 
     // Generate a random angle between 45 and 50 degrees (so the ball doesn't always start with the same path)
-    float angle = GetRandomValue(45, 60);
+    float angle = GetRandomValue(45, 55);
 
     // Calculate the corresponding x and y components of the speed
     ballSpeed.x = cos(angle * DEG2RAD) * 10;
@@ -117,7 +117,7 @@ int main() {
 
     // Ball position & speed
     ballPosition = { static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2) };
-    ballSpeed = { 2,3};
+    ballSpeed = { 1,2};
 
 
     // Initialize paddle positions
