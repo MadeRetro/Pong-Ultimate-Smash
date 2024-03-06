@@ -107,6 +107,8 @@ void ResetBall() {
 int main() {
     cout << "Hello Worrrld" << endl;
 
+
+
     Font ft = LoadFont("resources/fonts/jupiter_crash");
 
     screenHeight = 600;
@@ -171,11 +173,6 @@ int main() {
 
 
     buttons.push_back(Button({ 270, 300 }, { 200, 100 }, "VS Mode", AI, textureVersus));
-
-
-
-
-
 
 
     while (!WindowShouldClose()) {
