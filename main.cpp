@@ -12,8 +12,6 @@ enum Scene {
     SCORE,
     AI,
     SCOREAI,
-    SOLO_MODE,  // Add this line for solo mode
-    VERSUS_MODE,
 };
 
 float screenHeight;
@@ -50,7 +48,7 @@ public:
     Scene sceneID;
     Texture2D image;  // New member for the button image
 
-    // Constructor modified to accept Texture2D directly
+    
     Button(Vector2 position, Vector2 size, std::string text, Scene sceneID, Texture2D image) {
         bounds = { position.x, position.y, size.x, size.y };
         this->text = text;
@@ -63,7 +61,7 @@ public:
     }
 
     void draw() const {
-        // Draw the image if available, otherwise draw a white rectangle
+        // Draw if available found, otherwise draw white rectangle (but it works yay)
         if (image.id > 0) {
             DrawTextureRec(image, { 0, 0, static_cast<float>(image.width), static_cast<float>(image.height) }, { bounds.x, bounds.y }, WHITE);
 
@@ -77,18 +75,18 @@ public:
 };
 
 
-std::vector<Button> buttons; // Add this vector to store buttons
+std::vector<Button> buttons;
 
 void launchScene(Scene newScene) {
     currentScene = newScene; 
 }
 
-// Add this function to check for button clicks and launch corresponding scenes
+// check for button clicks and launch corresponding scenes
 void checkButtonClicks() {
     for (const Button& button : buttons) {
         if (button.isClicked()) {
             launchScene(button.sceneID);
-            break; // Stop checking buttons after the first click
+            break; // Stop checking buttons after
         }
     }
 }
@@ -96,11 +94,11 @@ void checkButtonClicks() {
 void ResetBall() {
     ballPosition = { static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2) };
 
-    // Generate a random angle between 45 and 50 degrees
-    float angle = GetRandomValue(40, 50);
+    // Generate a random angle between 45 and 50 degrees (so the ball doesn't always start with the same path)
+    float angle = GetRandomValue(45, 60);
 
     // Calculate the corresponding x and y components of the speed
-    ballSpeed.x = cos(angle * DEG2RAD) * 10; // 5 is the speed, adjust as needed
+    ballSpeed.x = cos(angle * DEG2RAD) * 10;
     ballSpeed.y = sin(angle * DEG2RAD) * 10;
 }
 
@@ -128,8 +126,8 @@ int main() {
     leftPaddlePosition = { 10, static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
     rightPaddlePosition = { static_cast<float>(screenWidth - paddleWidth - 30), static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
 
-    // Create buttons
 
+    // Create buttons
 
     Image img = LoadImage("Images/Courtdetennis.png");
 
@@ -154,6 +152,7 @@ int main() {
     UnloadImage(Versus);
 
 
+    //images of the paddles
 
     Image leftPaddleImage = LoadImage("Images/padl.png");
     Image rightPaddleImage = LoadImage("Images/padl.png");
@@ -187,6 +186,8 @@ int main() {
             DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
 
             DrawTextEx(ft, "Pong Ultimate", titlePosition, 40, 15, WHITE);
+
+
             //DrawText("Press any key to start", (screenWidth / 4)+100, screenHeight / 2, 20, WHITE);
 
             // Draw menu buttons
@@ -271,14 +272,14 @@ int main() {
 
             DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
 
-            // Draw ball
+            // Draw ball (simple circle)
             //DrawCircleV(ballPosition, ballRadius, WHITE);
 
             // Draw ball image
             DrawTexture(ballTexture, static_cast<int>(ballPosition.x - ballRadius), static_cast<int>(ballPosition.y - ballRadius), WHITE);
 
 
-            // Draw paddles
+            // Draw paddles (rectangles at first)
             //DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
             //DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
 
@@ -289,7 +290,7 @@ int main() {
 
 
 
-            // Draw text
+            // Draw text (abandonned)
             //DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 10, WHITE);
             //Previous text code idea
             //DrawText("Pong        Ultimate", 325,10, 30,WHITE);
@@ -349,6 +350,11 @@ int main() {
             }
 
             DrawText("player wins ! Congrats !", (screenWidth / 4) + 100, screenHeight / 2, 20, WHITE);
+
+
+            DrawText("Press SPACE to restart :)", (screenWidth / 4) + 60, (screenHeight / 2)+50, 20, WHITE);
+            DrawText("Press P to get back to menu", (screenWidth / 4) + 50, (screenHeight / 2) + 150, 20, WHITE);
+
             EndDrawing();
 
             // Check if the player wants to replay the game
@@ -495,6 +501,10 @@ int main() {
             }
 
             DrawText("player wins ! Congrats !", (screenWidth / 4) + 100, screenHeight / 2, 20, WHITE);
+
+            DrawText("Press SPACE to restart :)", (screenWidth / 4) + 60, (screenHeight / 2) + 50, 20, WHITE);
+            DrawText("Press P to get back to menu", (screenWidth / 4) + 50, (screenHeight / 2) + 150, 20, WHITE);
+
             EndDrawing();
 
             // Check if the player wants to replay the game
