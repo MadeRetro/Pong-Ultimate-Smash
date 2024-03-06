@@ -65,13 +65,15 @@ public:
     void draw() const {
         // Draw the image if available, otherwise draw a white rectangle
         if (image.id > 0) {
-            DrawTextureRec(image, { 0, 0, static_cast<float>(image.width), static_cast<float>(image.height) }, titlePosition, WHITE);
+            DrawTextureRec(image, { 0, 0, static_cast<float>(image.width), static_cast<float>(image.height) }, { bounds.x, bounds.y }, WHITE);
+
         }
         else {
             DrawRectangleRec(bounds, WHITE);
             DrawText(text.c_str(), static_cast<int>(bounds.x + bounds.width / 4), static_cast<int>(bounds.y + bounds.height / 4), 20, BLACK);
         }
     }
+
 };
 
 
@@ -129,9 +131,9 @@ int main() {
 
     Image img = LoadImage("Images/Courtdetennis.png");
 
-    Image Solo = LoadImage("Images/S.png");
+    Image Solo = LoadImage("Images/DUO.png");
 
-    Image Versus = LoadImage("Images/VS.png");
+    Image Versus = LoadImage("Images/SOL.png");
 
     Texture2D texture = LoadTextureFromImage(img);
     UnloadImage(img);
@@ -144,9 +146,10 @@ int main() {
 
 
     // Create buttons
-    buttons.push_back(Button({ 100, 100 }, { 200, 100 }, "Solo Mode", SOLO_MODE, textureSolo));
+    buttons.push_back(Button({ 270, 150 }, { 200, 100 }, "Solo Mode", GAME, textureSolo));
 
-    //buttons.push_back(Button({ 100, 250 }, { 200, 100 }, "VS Mode", VERSUS_MODE, textureVersus));
+
+    buttons.push_back(Button({ 270, 300 }, { 200, 100 }, "VS Mode", AI, textureVersus));
 
 
 
