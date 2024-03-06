@@ -124,7 +124,7 @@ int main() {
     ResetBall();
 
     leftPaddlePosition = { 10, static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
-    rightPaddlePosition = { static_cast<float>(screenWidth - paddleWidth - 10), static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
+    rightPaddlePosition = { static_cast<float>(screenWidth - paddleWidth - 30), static_cast<float>(screenHeight / 2 - paddleHeight / 2) };
 
     // Create buttons
 
@@ -135,6 +135,13 @@ int main() {
 
     Image Versus = LoadImage("Images/SOL.png");
 
+
+    Image ballImage = LoadImage("Images/bal.png");
+
+    Texture2D ballTexture = LoadTextureFromImage(ballImage);
+
+    UnloadImage(ballImage);
+
     Texture2D texture = LoadTextureFromImage(img);
     UnloadImage(img);
 
@@ -143,6 +150,20 @@ int main() {
 
     Texture2D textureVersus = LoadTextureFromImage(Versus);
     UnloadImage(Versus);
+
+
+
+    Image leftPaddleImage = LoadImage("Images/padl.png");
+    Image rightPaddleImage = LoadImage("Images/padl.png");
+
+    Texture2D leftPaddleTexture = LoadTextureFromImage(leftPaddleImage);
+    Texture2D rightPaddleTexture = LoadTextureFromImage(rightPaddleImage);
+
+    UnloadImage(leftPaddleImage);
+    UnloadImage(rightPaddleImage);
+
+
+
 
 
     // Create buttons
@@ -254,11 +275,22 @@ int main() {
             DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
 
             // Draw ball
-            DrawCircleV(ballPosition, ballRadius, WHITE);
+            //DrawCircleV(ballPosition, ballRadius, WHITE);
+
+            // Draw ball image
+            DrawTexture(ballTexture, static_cast<int>(ballPosition.x - ballRadius), static_cast<int>(ballPosition.y - ballRadius), WHITE);
+
 
             // Draw paddles
-            DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
-            DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
+            //DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
+            //DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
+
+
+            // Draw paddles images
+            DrawTexture(leftPaddleTexture, static_cast<int>(leftPaddlePosition.x), static_cast<int>(leftPaddlePosition.y), WHITE);
+            DrawTexture(rightPaddleTexture, static_cast<int>(rightPaddlePosition.x), static_cast<int>(rightPaddlePosition.y), WHITE);
+
+
 
             // Draw text
             //DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 10, WHITE);
@@ -394,11 +426,19 @@ int main() {
             DrawTextureEx(texture, { 0, 0 }, 0, 0.302, WHITE);
 
             // Draw ball
-            DrawCircleV(ballPosition, ballRadius, WHITE);
+            //DrawCircleV(ballPosition, ballRadius, WHITE);
+
+            // Draw ball image
+            DrawTexture(ballTexture, static_cast<int>(ballPosition.x - ballRadius), static_cast<int>(ballPosition.y - ballRadius), WHITE);
 
             // Draw paddles
-            DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
-            DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, RED);
+            //DrawRectangleV(leftPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
+            //DrawRectangleV(rightPaddlePosition, { static_cast<float>(paddleWidth), static_cast<float>(paddleHeight) }, WHITE);
+
+
+            // Draw paddles images
+            DrawTexture(leftPaddleTexture, static_cast<int>(leftPaddlePosition.x), static_cast<int>(leftPaddlePosition.y), WHITE);
+            DrawTexture(rightPaddleTexture, static_cast<int>(rightPaddlePosition.x), static_cast<int>(rightPaddlePosition.y), WHITE);
 
             // Draw text
             //DrawTextEx(ft, "Pong Ultimate", titlePosition, 30, 10, WHITE);
