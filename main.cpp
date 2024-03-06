@@ -5,7 +5,6 @@
 using namespace std;
 
 
-
 enum Scene {
     MENU,
     GAME,
